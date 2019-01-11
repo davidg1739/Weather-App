@@ -1,0 +1,17 @@
+html, body {
+    width:100%;
+    height:100%;
+}
+
+body {
+    background-color: #ffceb8;
+}
+
+.banner {
+    background-color:white;
+    border-color: #f5ddff;
+}
+
+.middle {
+    text-align:center;
+}
