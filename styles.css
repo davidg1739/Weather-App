@@ -10,6 +10,9 @@ body {
 .banner {
     background-color:white;
     border-color: #f5ddff;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+    padding-bottom: 15px;
 }
 
 .middle {
