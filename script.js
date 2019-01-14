@@ -1,13 +1,12 @@
 $(function() {
 
-    // $.get("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY", {
-    //   key: AIzaSyDuxPyuZ_uvAL3F9bCDGqBEY1I-COIYGeQ
-
-    // }).then(result => {
-    //   tokenOfPage = info.nextPageToken;
-    // })
+    $.get("https://maps.googleapis.com/maps/api/js?key=AIzaSyDuxPyuZ_uvAL3F9bCDGqBEY1I-COIYGeQ").then(result => {
+      console.log(result);
+    })
     
-    function showPosition (position) {
+    
+
+    function showPosition(position) {
         console.log(position)
     }
 
@@ -15,16 +14,13 @@ $(function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 showPosition,
-                function () {
+                function() {
                     console.log('Error')
-                },
-                {enableHighAccuracy: true}
-                )
+                }, { enableHighAccuracy: true }
+            )
         }
         else {
             console.log('Error');
         }
     }
-    
-    getLocation();
 })
