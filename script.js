@@ -1,19 +1,18 @@
 $(function() {
-
-    $.get("https://maps.googleapis.com/maps/api/js?key=AIzaSyDuxPyuZ_uvAL3F9bCDGqBEY1I-COIYGeQ").then(result => {
-      console.log(result);
-    })
     
-    
-
-    function showPosition(position) {
-        console.log(position)
+    function sendPosition(position) {
+        var userCoords = {
+            lat: position.coords.latitude,
+            long: position.coords.longitude
+        }
+        getWeather(userCoords);
+        
     }
 
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                showPosition,
+                sendPosition,
                 function() {
                     console.log('Error')
                 }, { enableHighAccuracy: true }
@@ -23,4 +22,18 @@ $(function() {
             console.log('Error');
         }
     }
+    
+    getLocation();
+    function getWeather(coords) {
+        $('.weather-temperature').openWeather({
+            key: "75735e198dd34b697621802ee7001b9e",
+            lat: coords.lat,
+            lng: coords.long,
+            descriptionTarget: ".desc"
+        });
+         
+         $('.locationInfo').html(`Lattitude: ${coords.lat} Longitude: ${coords.long}`)
+    }
+    
+    
 })
