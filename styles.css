@@ -17,4 +17,25 @@ body {
 
 .middle {
     text-align:center;
+    width:inherit;
+}
+
+.locationInfo {
+    width:inherit;
+}
+
+.location {
+    width:inherit;
+}
+
+.weather-temperature {
+    font-size:20px;
+}
+
+#otherTemps {
+    font-size:20px;
+}
+
+.wordTemperature {
+    display:none;
 }
