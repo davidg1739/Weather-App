@@ -151,9 +151,9 @@ $(function() {
             navigator.geolocation.getCurrentPosition(
                 sendPosition,
                 function() {
-                    console.log('Error')
+                    console.log('Error');
                 }, { enableHighAccuracy: true }
-            )
+            );
         }
         else {
             console.log('Error');
