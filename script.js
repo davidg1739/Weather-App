@@ -1,4 +1,56 @@
 $(function() {
+    
+    $('.search').focus();
+
+    var countryArray = [];
+    var cityArray = [];
+
+    $.get("countries.json", countries => {
+        for (countryCode in countries) {
+            countryArray.push([countryCode])
+        }
+
+        var paises = Object.keys(countries).map(function(key) {
+            return [Number(key), countries[key]];
+        });
+
+        var countryNames = [];
+
+        paises.forEach(pais => {
+            let tempCountry = pais[1];
+            countryNames.push(tempCountry.name);
+        });
+
+        for (let a = 0; a < countryArray.length; a++) {
+            countryArray[a].push(countryNames[a]);
+        }
+    });
+
+    var placesArray = countryArray;
+
+
+    $.get("cities.json", cities => {
+        var citiesArray = [];
+        for (let h = 0; h < cities.length; h++) {
+            let tempArray = Object.keys(cities[h]).map(function(key) {
+                return cities[h][key];
+            });
+            citiesArray.push(tempArray);
+        }
+
+
+        for (let b = 0; b < placesArray.length; b++) {
+            let tempCountryAbbreviation = placesArray[b][0];
+            let result = citiesArray.filter(c => c[0] == tempCountryAbbreviation);
+            placesArray[b].push(result);
+            placesArray[b][2].sort()
+
+        }
+
+        console.log(placesArray);
+
+    });
+
 
     displayDateAndTime();
 
@@ -16,6 +68,7 @@ $(function() {
 
     $('.submitSearch').click(function() {
         getDateAndTime();
+        
     });
 
     function getDateAndTime() {
@@ -109,28 +162,18 @@ $(function() {
 
     getLocation();
 
-    function getWeather(coords, cityName) {
+    function getWeather(coords) {
         $('.locationInfo').html(`Lattitude: ${coords.lat} Longitude: ${coords.long}`)
 
         $('.wordTemperature').css('display', 'block');
 
-        if (!cityName) {
-            $('.weather-temperature').openWeather({
-                key: "75735e198dd34b697621802ee7001b9e",
-                lat: coords.lat,
-                lng: coords.long,
-                descriptionTarget: ".desc",
-                success: weatherOutput
-            });
-        }
-        else {
-            $('.weather-temperature').openWeather({
-                key: "75735e198dd34b697621802ee7001b9e",
-                city: cityName,
-                descriptionTarget: ".desc",
-                success: weatherOutput
-            });
-        }
+        $('.weather-temperature').openWeather({
+            key: "75735e198dd34b697621802ee7001b9e",
+            lat: coords.lat,
+            lng: coords.long,
+            descriptionTarget: ".desc",
+            success: weatherOutput
+        });
 
         function weatherOutput(result) {
             console.log(result);
