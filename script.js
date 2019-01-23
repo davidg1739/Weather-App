@@ -1,12 +1,15 @@
+'use strict'
 $(function() {
-    
+    var placesArray;
+    var searchResults = [];
+
     $('.search').focus();
 
     var countryArray = [];
     var cityArray = [];
 
     $.get("countries.json", countries => {
-        for (countryCode in countries) {
+        for (let countryCode in countries) {
             countryArray.push([countryCode])
         }
 
@@ -26,10 +29,11 @@ $(function() {
         }
     });
 
-    var placesArray = countryArray;
+    placesArray = countryArray;
 
 
     $.get("cities.json", cities => {
+        console.log(cities);
         var citiesArray = [];
         for (let h = 0; h < cities.length; h++) {
             let tempArray = Object.keys(cities[h]).map(function(key) {
@@ -68,7 +72,79 @@ $(function() {
 
     $('.submitSearch').click(function() {
         getDateAndTime();
-        
+        let searchTerms = $('.search').val();
+        searchResults.length = 0;
+
+
+        if (searchTerms.indexOf(",") == -1) {
+            for (let i = 0; i < placesArray.length; i++) {
+                for (let o = 0; o < placesArray[i][2].length; o++) {
+                    let result = placesArray[i][2][o].filter(c => c == searchTerms);
+                    if (result.length != 0) {
+                        searchResults.push([placesArray[i][2][o], { country: placesArray[i][1] }]);
+                    }
+                }
+
+            }
+            console.log(searchResults);
+        }
+        else {
+            searchTerms = searchTerms.split(',');
+            searchTerms[1] = searchTerms[1].substring(1);
+            console.log(searchTerms);
+            for (let e = 0; e < placesArray.length; e++) {
+                if (placesArray[e][1] == searchTerms[1]) {
+
+                    for (let l = 0; l < placesArray[e][2].length; l++) {
+                        let result = placesArray[e][2][l].filter(c => c == searchTerms[0]);
+                        if (result.length != 0) {
+                            searchResults.push([placesArray[e][2][l], { country: placesArray[e][1] }]);
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+        if (searchResults.length > 0) {
+            $('.toggable').css('display', 'none');
+            $('.resultsList').css('display', 'block');
+            let resultLinksDiv = $('.resultLinks');
+            $(resultLinksDiv).empty();
+
+            for (let z = 0; z < searchResults.length; z++) {
+                let countryResult = searchResults[z][1].country;
+                let cityName = searchResults[z][0][1];
+                let placeLat = searchResults[z][0][2];
+                let placeLong = searchResults[z][0][3];
+
+                let tempLink = $(`<a class='searchResultLink' style='color:rgb(0,123,255);' data-lat='${placeLat}' data-long='${placeLong}'>${cityName}, ${countryResult}</a><br>`);
+
+                $(tempLink).hover(function() {
+                    $(this).css('cursor', 'pointer');
+                    $(this).css('text-decoration', 'underline');
+                }, function() {
+                    $(this).css('cursor', 'default');
+                    $(this).css('text-decoration', 'none');
+                });
+                $(resultLinksDiv).append(tempLink);
+                $(resultLinksDiv).append($(`<ul><li>Lattitude: ${placeLat}</li><li>Longitude: ${placeLong}</li></ul>`))
+            }
+            $(resultLinksDiv).prepend($('<p>A city may show up more than once with its country becuase there are multiple places which this Weather App canuse that have the terms you searched for.</p>'))
+            $('.searchResultLink').on('click', function() {
+                let location = $(this).data();
+                let locationPosition = {
+                    lat: location.lat,
+                    long: location.long
+                };
+                getWeather(locationPosition);
+            });
+        }
+        else if (searchResults.length == 0) {
+            alert("Location Not Found!");
+        }
+
     });
 
     function getDateAndTime() {
@@ -163,6 +239,8 @@ $(function() {
     getLocation();
 
     function getWeather(coords) {
+        $('.toggable').css('display', 'block');
+        $('.resultsList').css('display', 'none');
         $('.locationInfo').html(`Lattitude: ${coords.lat} Longitude: ${coords.long}`)
 
         $('.wordTemperature').css('display', 'block');

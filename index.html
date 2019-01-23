@@ -18,33 +18,43 @@
 </head>
 
 <body>
-  <div class="row no-gutters">
-    <div class="banner col-sm-3 offset-sm-1">
-      <div class="middle">
-        <div id="dateAndTime">
-        <h2 id='date'></h2>
-        <h2 id="time"></h2>
-      </div>
-      </div>
-    </div>
-    <div class="banner col-sm-3 offset-sm-1">
-      <div class='middle'>
-        <h1 class="heading">Weather App</h1>
-        <input type="text" class='search' placeholder='Place'/><button class='submitSearch'>Search</button>
-        <p>Type in the location as follows: 'city' or 'city, country'</p>
-        <div class="location">
-          <h3 class='locationInfo'></h3>
+  <div class="container-fluid">
+    <div class="row no-gutters">
+      <div class="banner col-sm-3 offset-sm-1">
+        <div class="middle">
+          <div id="dateAndTime">
+            <h2 id='date'></h2>
+            <h2 id="time"></h2>
+          </div>
         </div>
-        <h3 class='wordTemperature'>Temperature: </h3>
-        <div class="weather-temperature">
-
-        </div>
-        <div id="otherTemps"></div>
       </div>
+      <div class="banner col-sm-3 offset-sm-1">
+        <div class='middle'>
+          <h1 class="heading">Weather App</h1>
+          <input type="text" class='search' placeholder='Place' /><button class='submitSearch'>Search</button>
+          <p>Type in the location as follows: 'city' or 'city, country'</p>
+          <div class="toggable">
+            <div class="location">
+              <h3 class='locationInfo'></h3>
+            </div>
+            <h3 class='wordTemperature'>Temperature: </h3>
+            <div class="weather-temperature">
 
+            </div>
+            <div id="otherTemps"></div>
+          </div>
+          <div class="resultsList">
+            <div class="middle resultLinks">
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="banner col-sm-3 offset-sm-1"></div>
     </div>
-    <div class="banner col-sm-3 offset-sm-1"></div>
   </div>
+
 </body>
 
 </html>

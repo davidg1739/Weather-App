@@ -1,6 +1,8 @@
 html, body {
     width:100%;
     height:100%;
+    padding: 0px;
+    margin: 0px;
 }
 
 body {
@@ -10,14 +12,15 @@ body {
 .banner {
     background-color:white;
     border-color: #f5ddff;
-    border-bottom-right-radius: 50%;
-    border-bottom-left-radius: 50%;
-    padding-bottom: 15px;
+    border-bottom-right-radius: 10%;
+    border-bottom-left-radius: 10%;
+    height:inherit;
 }
 
 .middle {
     text-align:center;
     width:inherit;
+
 }
 
 .locationInfo {
@@ -38,4 +41,13 @@ body {
 
 .wordTemperature {
     display:none;
+}
+
+.resultsList {
+    display:none;
+    border-bottom-right-radius: 10%;
+    border-bottom-left-radius: 10%;
+    height:100vh;
+    overflow-y:auto;
+    
 }
