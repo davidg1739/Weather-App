@@ -31,16 +31,12 @@ body {
     width:inherit;
 }
 
-.weather-temperature {
+.weather-temperature, .desc, .windSpeed, .sunriseTime, .sunsetTime, .tillSunrise, .tillSunset, .otherSpeeds {
     font-size:20px;
 }
 
 #otherTemps {
     font-size:20px;
-}
-
-.wordTemperature {
-    display:none;
 }
 
 .resultsList {
