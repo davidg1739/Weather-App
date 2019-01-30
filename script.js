@@ -73,6 +73,7 @@ $(function() {
     $('.submitSearch').click(function() {
         getDateAndTime();
         let searchTerms = $('.search').val();
+        searchTerms = capitalizeEachWord(searchTerms);
         searchResults.length = 0;
 
 
@@ -238,6 +239,16 @@ $(function() {
 
     getLocation();
 
+    function capitalizeEachWord(str) {
+        var splitStr = str.toLowerCase().split(' ');
+        for (var i = 0; i < splitStr.length; i++) {
+            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+        }
+        
+        return splitStr.join(' ');
+    }
+
+
     function getWeather(coords) {
         $('.toggable').css('display', 'block');
         $('.resultsList').css('display', 'none');
@@ -259,22 +270,22 @@ $(function() {
             console.log(result);
 
             var start = new Date();
-            
+
             let currentTime = getDateAndTime();
             currentTime = currentTime[4];
             currentTime = currentTime.split(" ");
             currentTime[0].split(":")
-            
-            
-            
-            
+
+
+
+
             var sunrise = new Date();
             let sunriseTimeForResult = result.sunrise;
             sunriseTimeForResult = sunriseTimeForResult.split(":");
-            
+
             let tempHr = currentTime[0].split(':')[0];
             tempHr = Number(tempHr);
-            
+
             if (currentTime[1] == "PM" || tempHr > sunriseTimeForResult[0]) {
                 sunrise.setDate(start.getDate() + 1);
             }
@@ -283,24 +294,24 @@ $(function() {
                 sunriseTimeForResult[0] = sunriseTimeForResult[0];
             }
             else if (sunriseTimeForResult[1][1] == "PM") {
-                sunriseTimeForResult[0] = new String ((Number(sunriseTimeForResult[0]) + 12));
+                sunriseTimeForResult[0] = new String((Number(sunriseTimeForResult[0]) + 12));
             }
             sunrise.setHours(sunriseTimeForResult[0], sunriseTimeForResult[1][0]);
-            
+
             let timeDiffSr = 0;
             let hours = 1000 * 60 * 60;
             timeDiffSr = ((sunrise - start) / hours);
-            timeDiffSr = new String (timeDiffSr).split(".");
+            timeDiffSr = new String(timeDiffSr).split(".");
             timeDiffSr[0] = timeDiffSr[0] + " hours ";
             timeDiffSr[1] = "." + timeDiffSr[1];
-            
+
             if (isNaN(Number(timeDiffSr[1]))) {
                 timeDiffSr = "";
             }
             else {
-                timeDiffSr[1] = new String ((Math.floor(Number(timeDiffSr[1]) * 60))) + " minutes";
+                timeDiffSr[1] = new String((Math.floor(Number(timeDiffSr[1]) * 60))) + " minutes";
             }
-            
+
             var sunset = new Date();
             sunset.setDate(start.getDate() + 1);
             let sunsetTimeForResult = result.sunset;
@@ -313,45 +324,45 @@ $(function() {
                 sunsetTimeForResult[0] = sunsetTimeForResult[0];
             }
             else if (sunsetTimeForResult[1][1] == "PM") {
-                sunsetTimeForResult[0] = new String ((Number(sunsetTimeForResult[0]) + 12));
+                sunsetTimeForResult[0] = new String((Number(sunsetTimeForResult[0]) + 12));
             }
-            sunset.setHours(sunsetTimeForResult[0],sunsetTimeForResult[1][0]);
-            
+            sunset.setHours(sunsetTimeForResult[0], sunsetTimeForResult[1][0]);
+
             let timeDiffSs = 0;
             timeDiffSs = ((sunset - start) / hours);
-            timeDiffSs = new String (timeDiffSs).split(".");
+            timeDiffSs = new String(timeDiffSs).split(".");
             timeDiffSs[0] = timeDiffSs[0] + " hours ";
             timeDiffSs[1] = "." + timeDiffSs[1];
-            
+
             if (isNaN(Number(timeDiffSs[1]))) {
                 timeDiffSs[1] = "";
             }
             else {
-                timeDiffSs[1] = new String ((Math.floor(Number(timeDiffSs[1]) * 60))) + " minutes";
+                timeDiffSs[1] = new String((Math.floor(Number(timeDiffSs[1]) * 60))) + " minutes";
             }
-            
-            
+
+
             let timeDiffs = {
                 sunrise: timeDiffSr,
                 sunset: timeDiffSs
             };
-            
+
             $('.srTime').html(timeDiffs.sunrise);
             $('.ssTime').html(timeDiffs.sunset);
-            
+
 
             let speed = $('.windSpeed').html();
             speed = speed.split(" ");
             speed = $(`<span class='speedNumber'>${speed[0]}</span> <span data-toggle="tooltip" title="Meters Per Second">${speed[1]}</span>`);
             $('.windSpeed').html(speed);
-            
+
             let windSpeedMilesPerHour = $('.speedNumber').html();
             console.log(windSpeedMilesPerHour);
             windSpeedMilesPerHour = windSpeedMilesPerHour.split(" ");
-            windSpeedMilesPerHour = new String ((Number (windSpeedMilesPerHour[0]) * 2.236936)) + " mph";
-            
+            windSpeedMilesPerHour = new String((Number(windSpeedMilesPerHour[0]) * 2.236936)) + " mph";
+
             $('.otherSpeeds').html(windSpeedMilesPerHour)
-            
+
             let description = $('.desc').html();
             description = description.charAt(0).toUpperCase() + description.slice(1);
             $('.desc').html(description);
