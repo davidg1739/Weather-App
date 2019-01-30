@@ -271,7 +271,11 @@ $(function() {
             var sunrise = new Date();
             let sunriseTimeForResult = result.sunrise;
             sunriseTimeForResult = sunriseTimeForResult.split(":");
-            if (currentTime[1] == "PM" || currentTime[0][0] > sunriseTimeForResult[0]) {
+            
+            let tempHr = currentTime[0].split(':')[0];
+            tempHr = Number(tempHr);
+            
+            if (currentTime[1] == "PM" || tempHr > sunriseTimeForResult[0]) {
                 sunrise.setDate(start.getDate() + 1);
             }
             sunriseTimeForResult[1] = sunriseTimeForResult[1].split(" ");
@@ -289,13 +293,19 @@ $(function() {
             timeDiffSr = new String (timeDiffSr).split(".");
             timeDiffSr[0] = timeDiffSr[0] + " hours ";
             timeDiffSr[1] = "." + timeDiffSr[1];
-            timeDiffSr[1] = new String ((Math.floor(Number(timeDiffSr[1]) * 60))) + " minutes";
+            
+            if (isNaN(Number(timeDiffSr[1]))) {
+                timeDiffSr = "";
+            }
+            else {
+                timeDiffSr[1] = new String ((Math.floor(Number(timeDiffSr[1]) * 60))) + " minutes";
+            }
             
             var sunset = new Date();
             sunset.setDate(start.getDate() + 1);
             let sunsetTimeForResult = result.sunset;
             sunsetTimeForResult = sunsetTimeForResult.split(":");
-            if ((currentTime[1] == "PM" && currentTime[0][0] > sunsetTimeForResult[0])) {
+            if ((currentTime[1] == "PM" && tempHr > sunsetTimeForResult[0])) {
                 sunset.setDate(start.getDate() + 1);
             }
             sunsetTimeForResult[1] = sunsetTimeForResult[1].split(" ");
@@ -312,7 +322,14 @@ $(function() {
             timeDiffSs = new String (timeDiffSs).split(".");
             timeDiffSs[0] = timeDiffSs[0] + " hours ";
             timeDiffSs[1] = "." + timeDiffSs[1];
-            timeDiffSs[1] = new String ((Math.floor(Number(timeDiffSs[1]) * 60))) + " minutes";
+            
+            if (isNaN(Number(timeDiffSs[1]))) {
+                timeDiffSs[1] = "";
+            }
+            else {
+                timeDiffSs[1] = new String ((Math.floor(Number(timeDiffSs[1]) * 60))) + " minutes";
+            }
+            
             
             let timeDiffs = {
                 sunrise: timeDiffSr,
