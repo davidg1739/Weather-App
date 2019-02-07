@@ -152,7 +152,7 @@ $(function() {
         let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         let currentDate = new Date();
-        let time = clockConversion([currentDate.getHours(), currentDate.getMinutes()]);
+        let time = clockConversion([currentDate.getHours(), currentDate.getMinutes()], "12");
         currentDate = new String(currentDate);
         let dateArray = currentDate.split(" ");
         const dateArrayLength = dateArray.length;
@@ -186,31 +186,37 @@ $(function() {
 
     }
 
-    function clockConversion(inputtedTime) {
+    function clockConversion(inputtedTime, format) {
         let t;
         let mins;
+        if (format == "12") {
+            if (inputtedTime[1] < 10) {
+                mins = "0" + inputtedTime[1];
+            }
+            else {
+                mins = inputtedTime[1];
+            }
 
-        if (inputtedTime[1] < 10) {
-            mins = "0" + inputtedTime[1];
+            if (inputtedTime[0] < 12) {
+                t = `${inputtedTime[0]}` + ':' + `${mins}` + ' AM';
+            }
+            else if (inputtedTime[0] == 12) {
+                t = `${inputtedTime[0]}` + ':' + `${mins}` + ' PM';
+            }
+            else if (inputtedTime[0] > 12) {
+                let tempOperation = inputtedTime[0] % 12;
+                t = `${tempOperation}` + ':' + `${mins}` + ' PM';
+            }
+            else {
+                let tempOperation = inputtedTime[0] / 2;
+            }
+            return t
         }
-        else {
-            mins = inputtedTime[1];
+        else if (format == '24') {
+            let hr = inputtedTime + 12;
+            hr = new String(hr);
+            return hr;
         }
-
-        if (inputtedTime[0] < 12) {
-            t = `${inputtedTime[0]}` + ':' + `${mins}` + ' AM';
-        }
-        else if (inputtedTime[0] == 12) {
-            t = `${inputtedTime[0]}` + ':' + `${mins}` + ' PM';
-        }
-        else if (inputtedTime[0] > 12) {
-            let tempOperation = inputtedTime[0] % 12;
-            t = `${tempOperation}` + ':' + `${mins}` + ' PM';
-        }
-        else {
-            let tempOperation = inputtedTime[0] / 2;
-        }
-        return t
 
     }
 
@@ -244,7 +250,7 @@ $(function() {
         for (var i = 0; i < splitStr.length; i++) {
             splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
         }
-        
+
         return splitStr.join(' ');
     }
 
@@ -294,7 +300,7 @@ $(function() {
                 sunriseTimeForResult[0] = sunriseTimeForResult[0];
             }
             else if (sunriseTimeForResult[1][1] == "PM") {
-                sunriseTimeForResult[0] = new String((Number(sunriseTimeForResult[0]) + 12));
+                sunriseTimeForResult[0] = clockConversion(Number(sunriseTimeForResult[0]), '24');
             }
             sunrise.setHours(sunriseTimeForResult[0], sunriseTimeForResult[1][0]);
 
