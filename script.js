@@ -1,13 +1,15 @@
 'use strict'
 $(function() {
     var placesArray;
-    var searchResults = [];
+    var searchResults = []; // this array will be used to hold the rsults for the users search
 
-    $('.search').focus();
+    $('.search').focus(); // this makes the user's cursor be active in the search bar when the page loads
 
-    var countryArray = [];
-    var cityArray = [];
-
+    var countryArray = []; // this array will hold a list of countries
+    var cityArray = []; // this array will hold a list of cities
+    
+    // the block of code below sorts through the countries in 
+    
     $.get("countries.json", countries => {
         for (let countryCode in countries) {
             countryArray.push([countryCode])
@@ -148,6 +150,8 @@ $(function() {
 
     });
 
+
+    // the function below gets the current date and time depending on where regionally the user is in the world
     function getDateAndTime() {
         let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -185,11 +189,13 @@ $(function() {
         return dateArray;
 
     }
-
+    
+    
+    // the function below converts time from the milittary time format to the 12 hour format
     function clockConversion(inputtedTime, format) {
-        let t;
+        let t; // this variable is what will be returned to the user as the time converted into the 12 hour formt
         let mins;
-        if (format == "12") {
+        if (format == "12") { // the code within the brackets of this if statement will only be executed if the format requested is 12
             if (inputtedTime[1] < 10) {
                 mins = "0" + inputtedTime[1];
             }
@@ -212,14 +218,16 @@ $(function() {
             }
             return t
         }
-        else if (format == '24') {
+        else if (format == '24') { // the code within the brackets of this if statement will only be executed if the format requested is 24
             let hr = inputtedTime + 12;
             hr = new String(hr);
             return hr;
         }
 
     }
-
+    
+    
+    // the function below puts the user's coordinates into an object and sends it to the getWeather function
     function sendPosition(position) {
         var userCoords = {
             lat: position.coords.latitude,
@@ -228,7 +236,9 @@ $(function() {
         getWeather(userCoords);
 
     }
-
+    
+    
+    // the function below gets the current location of the user and sends it to the sendPosition function
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -244,7 +254,9 @@ $(function() {
     }
 
     getLocation();
-
+    
+    
+    // the function below capitalizes the first letter of every word in a string
     function capitalizeEachWord(str) {
         var splitStr = str.toLowerCase().split(' ');
         for (var i = 0; i < splitStr.length; i++) {
@@ -254,7 +266,9 @@ $(function() {
         return splitStr.join(' ');
     }
 
-
+    
+    
+    // the function below gets the weather for the coordinates inputted and then displays it
     function getWeather(coords) {
         $('.toggable').css('display', 'block');
         $('.resultsList').css('display', 'none');
